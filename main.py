@@ -1,4 +1,4 @@
-import numpy as np 
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import pandas_datareader as web
@@ -25,7 +25,7 @@ prediction_days = 60
 x_train = []
 y_train = []
 
-for x in range(prediction_days)
+for x in range(prediction_days):
     x_train.append(scaled_data(x-prediction_days))
     y_train.append(scaled_data[x, 0])
 
@@ -88,7 +88,7 @@ plt.show()
 
 ## actual prediction
 
-real_data = model_inputs[len(model_inputs) +1 - prediction_days:len(model_inputs+1)]]
+real_data = model_inputs[len(model_inputs) +1 - prediction_days:len(model_inputs+1)]
 real_data = np.array(real_data)
 real_data = np.reshape(real_data, (real_data.shape[0], real_data.shape[1], 1))
 

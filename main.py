@@ -37,12 +37,12 @@ x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
 model = Sequential()
 
 model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1],1)))
-model.add(Dropout(0,2))
+model.add(Dropout(0.2))
 model.add(LSTM(units=50, return_sequences=True))
-model.add(Dropout(0,2))
+model.add(Dropout(0.2))
 model.add(LSTM(units=50))
-model.add(Dropout(0,2))
-model.add(Dense(units=1))#next value
+model.add(Dropout(0.2))
+model.add(Dense(units=1)) #next value
 
 model.compile(optimizer='adam', loss='mean_squared_error')
 model.fit(x_train, y_train, epochs=25, batch_size=32)
@@ -67,7 +67,7 @@ model_inputs = scaler.transform(model_inputs)
 
 x_test = []
 
-for x in range(prediction_days, len(model_inputs)):
+for x in range(prediction_days, len(model_inputs)+1):
     x_test.append(model_inputs[x-prediction_days:x, 0])
 
 x_test = np.array(x_test)

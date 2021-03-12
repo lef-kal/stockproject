@@ -8,7 +8,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, LSTM
 
-company = 'GME'
+company = 'AAPL'
 
 start = dt.datetime(2012,1,1)
 end = dt.datetime(2020,1,1)
@@ -25,8 +25,8 @@ prediction_days = 60
 x_train = []
 y_train = []
 
-for x in range(prediction_days):
-    x_train.append(scaled_data(x-prediction_days))
+for x in range(prediction_days, len(scaled_data)):
+    x_train.append(scaled_data[x-prediction_days:x, 0])
     y_train.append(scaled_data[x, 0])
 
 x_train, y_train = np.array(x_train), np.array(y_train)
@@ -49,7 +49,7 @@ model.fit(x_train, y_train, epochs=25, batch_size=32)
 
 ##load data
 
-test_start =dt.datetime(2020,1,1)
+test_start = dt.datetime(2020,1,1)
 test_end = dt.datetime.now()
 
 test_data = web.DataReader(company, 'yahoo', test_start, test_end)
@@ -59,7 +59,7 @@ total_dataset =pd.concat((data['Close'], test_data['Close']), axis=0)
 
 ### input
 
-model_inputs =total_dataset[len(total_dataset) - len(test_data) - prediction_days:].values
+model_inputs = total_dataset[len(total_dataset) - len(test_data) - prediction_days:].values
 model_inputs = model_inputs.reshape(-1, 1)
 model_inputs = scaler.transform(model_inputs)
 
@@ -78,13 +78,13 @@ predicted_prices = scaler.inverse_transform(predicted_prices)
 
 ##plots
 
-plt.plot(actual_prices, color="black", label=f"Actual {company} Price")
-plt.plot(predicted_prices, color="green", label=f"Predicted {company} Price")
-plt.title(f"{company} Share Price")
-plt.xlabel("Time")
-plt.ylabel(f"{company} Share Price")
-plt.legend()
-plt.show()
+#plt.plot(actual_prices, color="black", label=f"Actual {company} Price")
+#plt.plot(predicted_prices, color="green", label=f"Predicted {company} Price")
+#plt.title(f"{company} Share Price")
+#plt.xlabel("Time")
+#plt.ylabel(f"{company} Share Price")
+#plt.legend()
+#plt.show()
 
 ## actual prediction
 
